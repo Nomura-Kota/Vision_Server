@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+wsproto
+dotenv
+python-dotenv
+torch
+torchvision
+transformers==4.44.2
+pillow
+einops
+timm
