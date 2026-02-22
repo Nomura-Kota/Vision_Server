@@ -11,5 +11,8 @@ class Config:
     def __init__(self):
         # --- ログ設定 ---
         self.LOG_LEVEL = os.getenv("LOG_LEVEL")
-        
+
+        # --- Visionモデル設定 ---
+        self.VISION_MODEL = os.getenv("VISION_MODEL", "microsoft/Florence-2-base")
+
 config = Config()

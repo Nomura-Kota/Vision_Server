@@ -8,7 +8,7 @@ router = APIRouter()
 async def vision(req: VisionRequest):
     try:
         # VLMへ画像データを送信し、解析結果を受け取る。
-        result = image_analysis(req.base64_string, req.task_prompt)
+        result = image_analysis(req.base64_string)
 
         return {"status": "success", "result": result}
     

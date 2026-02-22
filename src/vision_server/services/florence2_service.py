@@ -5,22 +5,6 @@ from transformers import AutoProcessor, AutoModelForCausalLM
 from transformers import dynamic_module_utils
 
 class Florence2VLM:
-    # def __init__(self, model_id: str = "microsoft/Florence-2-large"):
-    #     """
-    #     画像処理モデルをロードします。
-    #     """
-    #     self.device = "cuda"
-    #     self.torch_dtype = torch.float16
-    #     self.model = AutoModelForCausalLM.from_pretrained(
-    #         model_id,
-    #         trust_remote_code=True
-    #     ).to(self.device).to(self.torch_dtype)
-
-    #     self.processor = AutoProcessor.from_pretrained(
-    #         model_id,
-    #         trust_remote_code=True
-    #     )
-
     def __init__(self, model_id: str = "microsoft/Florence-2-base"):
         """
         画像処理モデルをロードします。
@@ -29,18 +13,15 @@ class Florence2VLM:
         self.torch_dtype = torch.float16
 
         # =========================================================================
-        # 【Windows向け修正】 flash_attn のチェックを回避するパッチ (修正版)
+        # 【Windows向け修正】 flash_attn のチェックを回避するパッチ
         # =========================================================================
-        
+
         # 1. オリジナルの関数を退避
         original_get_imports = dynamic_module_utils.get_imports
 
         # 2. 偽装用関数を定義
         def get_imports_proxy(filename: str | os.PathLike) -> list[str]:
-            # 退避しておいたオリジナルの関数を使う
             imports = original_get_imports(filename)
-            
-            # "flash_attn" があったら消す
             if "flash_attn" in imports:
                 imports.remove("flash_attn")
             return imports
@@ -58,7 +39,7 @@ class Florence2VLM:
             trust_remote_code=True,
             clean_up_tokenization_spaces=True
         )
-    
+
     def process(self, image, task_prompt: str = "<CAPTION>"):
         """
         画像とプロンプトを受け取り、推論を実行します。
@@ -81,7 +62,7 @@ class Florence2VLM:
         )
 
         generated_text = self.processor.batch_decode(
-            generated_ids, 
+            generated_ids,
             skip_special_tokens=False
         )[0]
 
