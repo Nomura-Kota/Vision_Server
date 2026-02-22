@@ -1,3 +1,4 @@
+import io
 import logging
 import sys
 from pathlib import Path
@@ -12,13 +13,14 @@ def logger_init(name=__name__):
         datefmt="%Y-%m-%d %H:%M:%S"
     )
 
-    # 1. コンソール出力用
-    console_handler = logging.StreamHandler(sys.stdout)
+    # 1. コンソール出力用（Windows の cp932 対策として utf-8 で出力）
+    stdout_utf8 = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
+    console_handler = logging.StreamHandler(stdout_utf8)
     console_handler.setFormatter(log_format)
 
     # 2. ファイル出力用
     project_root_path = generate_root_path()
-    log_file = Path(project_root_path / "datas" / "logs" / "chatbot_server.log") 
+    log_file = Path(project_root_path / "datas" / "logs" / "vision_server.log")
     log_file.parent.mkdir(parents=True, exist_ok=True)
 
     # 毎日0時に切り替える

@@ -21,7 +21,7 @@ class Florence2VLM:
     #         trust_remote_code=True
     #     )
 
-    def __init__(self, model_id: str = "microsoft/Florence-2-large"):
+    def __init__(self, model_id: str = "microsoft/Florence-2-base"):
         """
         画像処理モデルをロードします。
         """
